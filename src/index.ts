@@ -18,4 +18,5 @@ export { Checkbox, type CheckboxProps } from './components/forms/Checkbox';
 export { Field, type FieldProps } from './components/forms/Field';
 export { Input, type InputProps } from './components/forms/Input';
 export { Radio, RadioGroup, type RadioProps, type RadioGroupProps } from './components/forms/Radio';
+export { Switch, type SwitchProps } from './components/forms/Switch';
 export { Select, type SelectOption, type SelectProps } from './components/forms/Select';
