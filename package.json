@@ -1,6 +1,6 @@
 {
   "name": "@glorpx/design",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "React component library with TypeScript and Tailwind CSS",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -11,14 +11,20 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
-    }
+    },
+    "./tokens": {
+      "types": "./dist/tokens/index.d.ts",
+      "import": "./dist/tokens/index.js",
+      "require": "./dist/tokens/index.cjs"
+    },
+    "./tokens/index.css": "./dist/tokens/index.css"
   },
   "sideEffects": false,
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && mkdir -p dist/tokens && cp src/tokens/index.css dist/tokens/index.css",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
@@ -28,7 +34,8 @@
   },
   "peerDependencies": {
     "react": "^18.0.0",
-    "react-dom": "^18.0.0"
+    "react-dom": "^18.0.0",
+    "tailwindcss": "^3.0.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.0.0",
@@ -37,15 +44,16 @@
     "@types/react-dom": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "@vitest/coverage-v8": "~0.34.6",
     "eslint": "^8.0.0",
     "jsdom": "^22.0.0",
+    "oxlint": "^0.1.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "tailwindcss": "^3.0.0",
     "tsup": "^7.0.0",
     "typescript": "^5.0.0",
-    "vitest": "^0.34.0",
-    "oxlint": "^0.1.0"
+    "vitest": "^0.34.0"
   },
   "keywords": [
     "react",

@@ -1,0 +1,510 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap");
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--gx-canvas);color:var(--gx-text);
+  font-family:var(--gx-font-ui);font-size:var(--gx-text-body);line-height:var(--gx-lh-body);
+  font-feature-settings:var(--gx-font-features);font-variant-numeric:tabular-nums;
+  font-optical-sizing:auto;text-wrap:pretty;
+}
+a{color:var(--gx-accent-text);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+p{max-inline-size:var(--gx-measure);margin-block:1.5em}
+h1,h2,h3{font-family:var(--gx-font-display);font-weight:var(--gx-weight-semibold);text-wrap:balance}
+code,kbd,pre,samp{font-family:var(--gx-font-mono);font-size:var(--gx-text-code)}
+::selection{background:var(--gx-accent-wash)}
+
+/* THE LIGHTNESS CONTRACT
+   Hue is free. Lightness is locked. Every role sits inside an OKLCH lightness
+   band that is mathematically guaranteed to clear WCAG 2.2 AAA (7:1 for text,
+   3:1 for graphics) against every surface in the ladder.
+
+   Bands (measured by sweeping 72 hues x 4 chroma levels):
+     text / link   light  L <= 0.405   |  dark  L >= 0.785
+     graphic/border light  L <= 0.601   |  dark  L >= 0.558
+
+   Surface elevation moves TOWARD WHITE in light mode, so the worst-case
+   contrast surface is the canvas, not the card. */
+
+:root{
+  /* --- the one knob --- */
+  --gx-accent-h:262; /* @kind other */          /* the one knob */          /* 0-360, free */
+  --gx-accent-c:0.160; /* @kind other */        /* chroma, free within gamut */
+  --gx-accent-c-dark:0.130; /* @kind other */   /* dark mode sits higher on L, so slightly lower C */
+
+  /* --- lightness contract constants --- */
+  --gx-L-text:0.405; /* @kind other */
+  --gx-L-graphic:0.601; /* @kind other */
+  --gx-L-text-dark:0.785; /* @kind other */
+  --gx-L-graphic-dark:0.558; /* @kind other */
+
+  /* --- light mode (warm paper, default) --- */
+  --gx-canvas:#F1EDE6;
+  --gx-surface:#F8F6F1;
+  --gx-surface-raised:#FFFDF9;
+  --gx-hairline:#8B8883;
+  --gx-text:#161613;
+  --gx-text-secondary:#534E46;
+
+  --gx-accent-text:oklch(0.405 var(--gx-accent-c) var(--gx-accent-h));
+  --gx-accent-graphic:oklch(0.601 var(--gx-accent-c) var(--gx-accent-h));
+  --gx-accent-solid:oklch(0.420 var(--gx-accent-c) var(--gx-accent-h));
+  --gx-accent-solid-label:#FFFFFF;
+  --gx-accent-wash:oklch(0.960 0.020 var(--gx-accent-h));
+
+  --gx-success:#005C1F;
+  --gx-danger:#9D160B;
+  --gx-warning:#774200;
+  --gx-success-wash:#E4F0E6;
+  --gx-danger-wash:#F6E5E2;
+  --gx-warning-wash:#F5EBDC;
+
+  /* brand mark — never an interface color */
+  --gx-mark:#DF4218;
+  --gx-mark-iris:var(--gx-accent-graphic);
+
+  color-scheme:light;
+}
+
+/* explicit light scope, so a nested [data-gx-mode="light"] island can sit inside a dark page */
+[data-gx-mode="light"]{
+  --gx-canvas:#F1EDE6;
+  --gx-surface:#F8F6F1;
+  --gx-surface-raised:#FFFDF9;
+  --gx-hairline:#8B8883;
+  --gx-text:#161613;
+  --gx-text-secondary:#534E46;
+  --gx-accent-text:oklch(0.405 var(--gx-accent-c) var(--gx-accent-h));
+  --gx-accent-graphic:oklch(0.601 var(--gx-accent-c) var(--gx-accent-h));
+  --gx-accent-solid:oklch(0.420 var(--gx-accent-c) var(--gx-accent-h));
+  --gx-accent-solid-label:#FFFFFF;
+  --gx-accent-wash:oklch(0.960 0.020 var(--gx-accent-h));
+  --gx-success:#005C1F;
+  --gx-danger:#9D160B;
+  --gx-warning:#774200;
+  --gx-success-wash:#E4F0E6;
+  --gx-danger-wash:#F6E5E2;
+  --gx-warning-wash:#F5EBDC;
+  color-scheme:light;
+}
+
+[data-gx-mode="dark"]{
+  --gx-canvas:#121210;
+  --gx-surface:#1A1A18;
+  --gx-surface-raised:#232320;
+  --gx-hairline:#6E6C67;
+  --gx-text:#F2EFE8;
+  --gx-text-secondary:#B2ADA4;
+
+  --gx-accent-text:oklch(0.785 var(--gx-accent-c-dark) var(--gx-accent-h));
+  --gx-accent-graphic:oklch(0.558 var(--gx-accent-c) var(--gx-accent-h));
+  --gx-accent-solid:oklch(0.785 var(--gx-accent-c-dark) var(--gx-accent-h));
+  --gx-accent-solid-label:#121210;
+  --gx-accent-wash:oklch(0.260 0.045 var(--gx-accent-h));
+
+  --gx-success:#67C07C;
+  --gx-danger:#FF8D79;
+  --gx-warning:#E79E3C;
+  --gx-success-wash:#1B2A1E;
+  --gx-danger-wash:#2C1B18;
+  --gx-warning-wash:#2A2115;
+
+  color-scheme:dark;
+}
+
+/* sector presets — named combinations of the three axes, not a new layer */
+[data-gx-theme="tools"]{--gx-accent-h:262 /* @kind other */}
+[data-gx-theme="finance"]{--gx-accent-h:232 /* @kind other */}
+[data-gx-theme="news"]{--gx-accent-h:25 /* @kind other */}
+[data-gx-theme="media"]{--gx-accent-h:300 /* @kind other */}
+[data-gx-theme="health"]{--gx-accent-h:155 /* @kind other */}
+
+/* Depth is carried by the surface ladder + hairline. Shadow is reserved for
+   layers that genuinely float (dialog, popover, dropdown). */
+:root{
+  --gx-border-hairline:1px solid var(--gx-hairline);
+  --gx-shadow-float:0 8px 24px -8px color-mix(in oklab,#000 28%,transparent),0 2px 6px -2px color-mix(in oklab,#000 18%,transparent);
+  --gx-shadow-overlay:0 24px 64px -16px color-mix(in oklab,#000 38%,transparent);
+}
+[data-gx-mode="dark"]{
+  --gx-shadow-float:0 8px 24px -8px #0000008c;
+  --gx-shadow-overlay:0 24px 64px -16px #000000a6;
+}
+
+:root{
+  --gx-focus-width:3px;
+  --gx-focus-offset:2px;
+  --gx-focus-color:var(--gx-text); /* ink, never accent — theme-proof */
+}
+:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{
+  outline:var(--gx-focus-width) solid var(--gx-focus-color);
+  outline-offset:var(--gx-focus-offset);
+  border-radius:inherit;
+}
+
+/* No font binaries were provided with the brief — loaded from Google Fonts.
+   Space Grotesk (display), Inter (UI/body), JetBrains Mono (mono). */
+
+:root{
+  --gx-font-display:"Space Grotesk",ui-sans-serif,system-ui,sans-serif;
+  --gx-font-ui:"Inter","Inter Variable",system-ui,-apple-system,sans-serif;
+  --gx-font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  /* brand fingerprint: locked OpenType features on the UI face */
+  --gx-font-features:"cv05" 1,"cv08" 1,"cv11" 1,"ss03" 1;
+}
+
+:root{
+  --gx-motion-scale:1; /* @kind other */
+  --gx-duration-instant:calc(80ms * var(--gx-motion-scale)); /* @kind other */
+  --gx-duration-fast:calc(140ms * var(--gx-motion-scale)); /* @kind other */
+  --gx-duration-base:calc(220ms * var(--gx-motion-scale)); /* @kind other */
+  --gx-duration-slow:calc(340ms * var(--gx-motion-scale)); /* @kind other */
+  --gx-ease-standard:cubic-bezier(0.2,0,0,1); /* @kind other */
+  --gx-ease-exit:cubic-bezier(0.4,0,1,1); /* @kind other */
+  --gx-ease-iris:cubic-bezier(0.34,1.3,0.64,1); /* @kind other */ /* iris only */
+}
+/* one lever kills every motion in the system */
+@media (prefers-reduced-motion:reduce){:root{--gx-motion-scale:0 /* @kind other */}}
+
+:root,[data-gx-radius="soft"]{
+  --gx-radius-sm:6px;--gx-radius-md:10px;--gx-radius-lg:14px;--gx-radius-pill:9999px;
+}
+[data-gx-radius="sharp"]{
+  --gx-radius-sm:2px;--gx-radius-md:3px;--gx-radius-lg:4px;--gx-radius-pill:4px;
+}
+[data-gx-radius="round"]{
+  --gx-radius-sm:8px;--gx-radius-md:16px;--gx-radius-lg:24px;--gx-radius-pill:9999px;
+}
+
+:root{
+  --gx-space-unit:4px;
+  --gx-space-0:0;
+  --gx-space-1:4px;
+  --gx-space-2:8px;
+  --gx-space-3:12px;
+  --gx-space-4:16px;
+  --gx-space-5:20px;
+  --gx-space-6:24px;
+  --gx-space-8:32px;
+  --gx-space-10:40px;
+  --gx-space-12:48px;
+  --gx-space-16:64px;
+  --gx-space-20:80px;
+  --gx-space-24:96px;
+  --gx-target-min:44px;   /* SC 2.5.5 Target Size (Enhanced), all densities */
+}
+
+/* INTERACTION STATES — the state layer.
+   Components are inline-styled so they stay framework-agnostic, and inline styles
+   cannot express a pseudo-state. Every hover / active / disabled rule in the system
+   therefore lands here, keyed to one class per component, and has to out-specify the
+   inline value — hence !important, always on a single property.
+
+   Rules (readme §States):
+     hover  — one surface step, or the accent mixed 8-12%, over --gx-duration-instant (80ms)
+     active — deepens the fill; never a scale, never a bounce
+     disabled — --gx-disabled-opacity + not-allowed
+   A solid fill mixes toward --gx-text, which is the one colour guaranteed to
+   contrast with that fill's label in both modes, so hover can only ever raise
+   contrast — the lightness contract survives every state. */
+
+:root{
+  --gx-disabled-opacity:0.45; /* @kind other */
+
+  /* fills */
+  --gx-hover-raised:color-mix(in oklab, var(--gx-accent-graphic) 10%, var(--gx-surface-raised));
+  --gx-active-raised:color-mix(in oklab, var(--gx-accent-graphic) 18%, var(--gx-surface-raised));
+  --gx-hover-ghost:color-mix(in oklab, var(--gx-accent-graphic) 10%, transparent);
+  --gx-active-ghost:color-mix(in oklab, var(--gx-accent-graphic) 18%, transparent);
+  --gx-hover-solid:color-mix(in oklab, var(--gx-accent-solid) 88%, var(--gx-text));
+  --gx-active-solid:color-mix(in oklab, var(--gx-accent-solid) 78%, var(--gx-text));
+  --gx-hover-danger:color-mix(in oklab, var(--gx-danger) 88%, var(--gx-text));
+  --gx-active-danger:color-mix(in oklab, var(--gx-danger) 78%, var(--gx-text));
+
+  /* borders */
+  --gx-hover-border:var(--gx-text-secondary);
+
+  /* focus ring on a coloured fill: ink would sit on top of the fill, so it swaps
+     to the canvas — still theme-proof, because neither end is the accent */
+  --gx-focus-color-on-fill:var(--gx-canvas);
+}
+
+/* --- transitions ------------------------------------------------------------ */
+.gx-btn,.gx-iconbtn,.gx-tab,.gx-tag__x,.gx-copy,.gx-field,.gx-choice input,.gx-choice [role="switch"]{
+  transition:background var(--gx-duration-instant) var(--gx-ease-standard),
+    border-color var(--gx-duration-instant) var(--gx-ease-standard),
+    color var(--gx-duration-instant) var(--gx-ease-standard);
+}
+
+/* --- buttons (shared by Button and IconButton) ------------------------------ */
+.gx-btn--primary:not(:disabled):hover{background:var(--gx-hover-solid) !important}
+.gx-btn--primary:not(:disabled):active{background:var(--gx-active-solid) !important}
+.gx-btn--danger:not(:disabled):hover{background:var(--gx-hover-danger) !important}
+.gx-btn--danger:not(:disabled):active{background:var(--gx-active-danger) !important}
+.gx-btn--secondary:not(:disabled):hover{background:var(--gx-hover-raised) !important;border-color:var(--gx-hover-border) !important}
+.gx-btn--secondary:not(:disabled):active{background:var(--gx-active-raised) !important}
+.gx-btn--ghost:not(:disabled):hover{background:var(--gx-hover-ghost) !important}
+.gx-btn--ghost:not(:disabled):active{background:var(--gx-active-ghost) !important}
+
+/* --- tabs, tag remove, copy button ----------------------------------------- */
+.gx-tab:hover{background:var(--gx-hover-ghost) !important;color:var(--gx-text) !important}
+.gx-tab:active{background:var(--gx-active-ghost) !important}
+.gx-tag__x:hover{background:var(--gx-hover-ghost) !important;color:var(--gx-text) !important}
+.gx-tag__x:active{background:var(--gx-active-ghost) !important}
+.gx-copy:hover{background:var(--gx-hover-ghost) !important;color:var(--gx-text) !important}
+.gx-copy:active{background:var(--gx-active-ghost) !important}
+
+/* --- fields ---------------------------------------------------------------- */
+.gx-field:not([data-disabled="true"]):not([data-invalid="true"]):hover,
+.gx-field:not([data-disabled="true"]):not([data-invalid="true"]):focus-within{border-color:var(--gx-hover-border) !important}
+select.gx-field:not([data-disabled="true"]):not([data-invalid="true"]):hover{border-color:var(--gx-hover-border) !important}
+
+/* --- checkbox / radio / switch --------------------------------------------- */
+.gx-choice:not([data-disabled="true"]):hover input:not(:checked),
+.gx-choice:not([data-disabled="true"]):hover [role="switch"][aria-checked="false"]{border-color:var(--gx-hover-border) !important}
+.gx-choice:not([data-disabled="true"]):hover input:checked,
+.gx-choice:not([data-disabled="true"]):hover [role="switch"][aria-checked="true"]{background:var(--gx-hover-solid) !important}
+.gx-choice:not([data-disabled="true"]):active input:checked,
+.gx-choice:not([data-disabled="true"]):active [role="switch"][aria-checked="true"]{background:var(--gx-active-solid) !important}
+
+/* --- links ----------------------------------------------------------------- */
+.gx-link:hover{text-decoration-thickness:2px !important}
+
+/* --- focus on coloured fills ----------------------------------------------- */
+.gx-on-fill:focus-visible{outline-color:var(--gx-focus-color-on-fill) !important}
+
+/* --- loading, without motion ----------------------------------------------- */
+/* --gx-motion-scale drops to 0 under reduced motion, which would leave the ring
+   frozen and meaningless. A dashed static ring carries the busy state instead. */
+@media (prefers-reduced-motion:reduce){
+  .gx-spinner{animation:none !important;border-style:dashed !important}
+}
+
+/* tokens/surface-styles.css — additive visual tuning (v1.1, minor: adds only).
+   Implements the approved research trends: typography-first, bento grid,
+   color-adaptive hue, micro-interactions, 2D light illusion, and glass
+   restricted to chrome. Claymorphism is deliberately NOT implemented.
+
+   Contract: every default below is a no-op. With no data-gx-surface-style /
+   data-gx-fluid attribute and no gx-* utility class on the page, output is
+   byte-identical to v1.0.0. Nothing here touches DOM, ARIA or focus.
+
+   NEW TOKENS
+   type   --gx-text-display-2xl --gx-lh-display-tight --gx-track-display-2xl
+          --gx-measure-display --gx-rule-heavy
+   bento  --gx-bento-cols --gx-bento-gap --gx-bento-row
+   fluid  --gx-fluid-hue-from --gx-fluid-hue-to --gx-fluid-chroma-max
+          --gx-duration-fluid
+   motion --gx-ease-spring-subtle --gx-duration-morph --gx-stagger-step
+          --gx-stagger-max
+   lit    --gx-lit-from --gx-lit-to --gx-lit-angle --gx-lit-delta-max
+          --gx-lit-gradient --gx-lit-wash
+   glass  --gx-glass-alpha --gx-glass-blur --gx-glass-bg --gx-glass-border
+          --gx-glass-filter --gx-glass-scrim
+
+   NEW UTILITIES
+   .gx-display .gx-display-2xl .gx-rule .gx-lede
+   .gx-bento .gx-bento-span-2 .gx-bento-span-3 .gx-bento-span-4 .gx-bento-tall
+   .gx-lit .gx-lit-wash
+   .gx-chrome .gx-glass
+   .gx-tabs-editorial
+   .gx-spring .gx-press .gx-stagger .gx-morph
+*/
+
+:root{
+  /* 1 — typography-first: one tier ABOVE the existing scale, same two text colors */
+  --gx-text-display-2xl:clamp(3rem,8vw,6rem);
+  --gx-lh-display-tight:1; /* @kind other */        /* legal only >= 2rem (SC 1.4.12) */
+  --gx-track-display-2xl:-0.04em; /* @kind other */ /* floor: tighter hurts dyslexic reading */
+  --gx-measure-display:24ch; /* @kind spacing */
+  --gx-rule-heavy:2px; /* @kind spacing */
+
+  /* 2 — bento grid: layout only. span utilities, never order/dense */
+  --gx-bento-cols:repeat(4,minmax(0,1fr)); /* @kind other */
+  --gx-bento-gap:calc(var(--gx-space-4) * var(--gx-density)); /* @kind spacing */
+  --gx-bento-row:minmax(9rem,auto); /* @kind other */
+
+  /* 3 — color-adaptive: hue and chroma move, lightness never does */
+  --gx-fluid-hue-from:var(--gx-accent-h); /* @kind other */
+  --gx-fluid-hue-to:var(--gx-accent-h); /* @kind other */
+  --gx-fluid-chroma-max:0.16; /* @kind other */     /* above this, gamut clipping drags L */
+  --gx-duration-fluid:calc(1200ms * var(--gx-motion-scale)); /* @kind other */
+
+  /* 4 — micro-interactions: richer vocabulary inside the existing limits */
+  --gx-ease-spring-subtle:cubic-bezier(0.34,1.12,0.64,1); /* @kind other */ /* ~3% overshoot */
+  --gx-duration-morph:calc(220ms * var(--gx-motion-scale)); /* @kind other */
+  --gx-stagger-step:calc(40ms * var(--gx-motion-scale)); /* @kind other */
+  --gx-stagger-max:6; /* @kind other */
+
+  /* 5 — 2D light illusion: both stops must be existing surface tokens, dL <= 0.06 */
+  --gx-lit-from:var(--gx-surface-raised); /* @kind color */
+  --gx-lit-to:var(--gx-surface); /* @kind color */
+  --gx-lit-angle:160deg; /* @kind other */          /* one light direction, system-wide */
+  --gx-lit-delta-max:0.06; /* @kind other */
+  --gx-lit-gradient:linear-gradient(var(--gx-lit-angle),var(--gx-lit-from),var(--gx-lit-to)); /* @kind other */
+  --gx-lit-wash:radial-gradient(130% 130% at 12% 0%,var(--gx-accent-wash),transparent 68%); /* @kind other */
+
+  /* 6 — glass, chrome only. alpha floor 0.86: worst-case backdrop shifts <= 0.04 L,
+         so 7:1 text lands no lower than ~6.2:1 (still AAA) */
+  --gx-glass-alpha:88%; /* @kind other */
+  --gx-glass-blur:12px; /* @kind other */
+  --gx-glass-bg:color-mix(in oklab,var(--gx-surface) var(--gx-glass-alpha),transparent); /* @kind color */
+  --gx-glass-border:var(--gx-hairline); /* @kind color */
+  --gx-glass-filter:none; /* @kind other */
+  --gx-glass-scrim:color-mix(in oklab,var(--gx-canvas) 60%,transparent); /* @kind color */
+}
+
+/* blur is decoration, never a source of contrast — and only where it is supported */
+@supports (backdrop-filter:blur(1px)){
+  :root{--gx-glass-alpha:86%;--gx-glass-filter:blur(var(--gx-glass-blur)) saturate(1.08) /* @kind other */}
+}
+/* mandatory fallbacks: solid surface, no blur, no gradient */
+@media (prefers-contrast:more),(forced-colors:active){
+  :root{--gx-glass-alpha:100%;--gx-glass-bg:var(--gx-surface);--gx-glass-filter:none /* @kind other */}
+}
+
+/* --- 1. typography-first ------------------------------------------------- */
+.gx-display,.gx-display-2xl{font-family:var(--gx-font-display);font-weight:var(--gx-weight-semibold);
+  line-height:var(--gx-lh-display-tight);letter-spacing:var(--gx-track-display-2xl);
+  max-inline-size:var(--gx-measure-display);text-wrap:balance;margin-block:0}
+.gx-display{font-size:var(--gx-text-display-xl)}
+.gx-display-2xl{font-size:var(--gx-text-display-2xl)}
+/* tight leading is illegal below 2rem: fall back to the body contract */
+@media (max-width:420px){.gx-display,.gx-display-2xl{line-height:var(--gx-lh-display-lg)}}
+.gx-rule{border-block-start:var(--gx-rule-heavy) solid var(--gx-text)}
+.gx-lede{font-size:var(--gx-text-body-lg);line-height:var(--gx-lh-body);
+  color:var(--gx-text-secondary);max-inline-size:var(--gx-measure)}
+
+/* --- 2. bento grid ------------------------------------------------------- */
+/* Asymmetry comes from span only, so visual order always equals source order
+   (SC 1.3.2 / 2.4.3). order, grid-auto-flow:dense and explicit placement are
+   not provided on purpose. Rows are rem-based so they grow with zoom (1.4.4). */
+.gx-bento{display:grid;grid-template-columns:var(--gx-bento-cols);
+  grid-auto-rows:var(--gx-bento-row);gap:var(--gx-bento-gap)}
+.gx-bento-span-2{grid-column:span 2}
+.gx-bento-span-3{grid-column:span 3}
+.gx-bento-span-4{grid-column:span 4}
+.gx-bento-tall{grid-row:span 2}
+@media (max-width:900px){
+  .gx-bento{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gx-bento-span-3,.gx-bento-span-4{grid-column:span 2}
+}
+@media (max-width:640px){
+  .gx-bento{grid-template-columns:minmax(0,1fr);grid-auto-rows:auto}
+  .gx-bento-span-2,.gx-bento-span-3,.gx-bento-span-4{grid-column:span 1}
+  .gx-bento-tall{grid-row:auto}
+}
+
+/* --- 3. color-adaptive --------------------------------------------------- */
+/* Only the hue is animated. Because every accent role is oklch() with a locked
+   L, every intermediate value stays inside the same lightness band — contrast
+   is invariant across the whole transition, so intermediate points need no
+   audit. Opt in with data-gx-fluid="on"; --gx-motion-scale still kills it. */
+@property --gx-accent-h{syntax:"<number>";inherits:true;initial-value:262}
+[data-gx-fluid="on"]{transition:--gx-accent-h var(--gx-duration-fluid) var(--gx-ease-standard)}
+@media (prefers-reduced-motion:reduce){[data-gx-fluid="on"]{transition:none}}
+
+/* --- 4. micro-interactions ---------------------------------------------- */
+/* transform + opacity only, max two properties, one signature moment per page.
+   Every duration is already multiplied by --gx-motion-scale, so the single
+   existing lever switches all of this off. */
+.gx-spring{transition:transform var(--gx-duration-fast) var(--gx-ease-spring-subtle),
+  opacity var(--gx-duration-fast) var(--gx-ease-standard)}
+.gx-press:active{transform:scale(0.98)}
+.gx-stagger>*{animation:gx-rise var(--gx-duration-base) var(--gx-ease-standard) both}
+.gx-stagger>*:nth-child(1){animation-delay:0ms}
+.gx-stagger>*:nth-child(2){animation-delay:calc(var(--gx-stagger-step) * 1)}
+.gx-stagger>*:nth-child(3){animation-delay:calc(var(--gx-stagger-step) * 2)}
+.gx-stagger>*:nth-child(4){animation-delay:calc(var(--gx-stagger-step) * 3)}
+.gx-stagger>*:nth-child(5){animation-delay:calc(var(--gx-stagger-step) * 4)}
+.gx-stagger>*:nth-child(n+6){animation-delay:calc(var(--gx-stagger-step) * 5)}
+@keyframes gx-rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.gx-morph>*{transition:opacity var(--gx-duration-morph) var(--gx-ease-standard),
+  transform var(--gx-duration-morph) var(--gx-ease-spring-subtle)}
+@media (prefers-reduced-motion:reduce){
+  .gx-spring,.gx-morph>*{transition:none}
+  .gx-press:active{transform:none}
+  .gx-stagger>*{animation:none}
+}
+
+/* --- 5. 2D light illusion ---------------------------------------------- */
+/* Both stops are surface tokens that already passed audit, so the worst case
+   for text is still an audited value. No mesh, no aurora, no glow. */
+/* !important because components carry inline background shorthands */
+.gx-lit{background-image:var(--gx-lit-gradient) !important}
+.gx-lit-wash{background-image:var(--gx-lit-wash) !important}
+@media (forced-colors:active){.gx-lit,.gx-lit-wash{background-image:none !important}}
+
+/* --- 6. glass, chrome only --------------------------------------------- */
+/* .gx-chrome is solid by default and only turns to glass when the product
+   opts in with data-gx-surface-style="glass". The hairline is mandatory:
+   an edge may never depend on blur alone (SC 1.4.11). */
+.gx-chrome{background:var(--gx-surface);border-block-end:1px solid var(--gx-hairline)}
+[data-gx-surface-style~="glass"] .gx-chrome{background:var(--gx-glass-bg);
+  backdrop-filter:var(--gx-glass-filter);-webkit-backdrop-filter:var(--gx-glass-filter)}
+/* utility for controls sitting inside chrome; !important because components
+   carry inline styles. Never legal on primary or danger actions. */
+.gx-glass{background:var(--gx-glass-bg) !important;border-color:var(--gx-glass-border) !important;
+  backdrop-filter:var(--gx-glass-filter);-webkit-backdrop-filter:var(--gx-glass-filter)}
+@media (prefers-contrast:more),(forced-colors:active){
+  .gx-chrome,[data-gx-surface-style~="glass"] .gx-chrome{background:var(--gx-surface);backdrop-filter:none}
+  .gx-glass{background:var(--gx-surface) !important;backdrop-filter:none}
+}
+
+/* --- editorial tabs variant (typography-first, zero DOM/ARIA change) ---- */
+/* Selected state uses three channels — weight, text color and a 3px rule —
+   never color alone (SC 1.4.1). No accent hue, so it is correct on any theme.
+   Vertical padding keeps the 44px target even though it reads as plain text. */
+.gx-tabs-editorial [role="tablist"]{gap:var(--gx-space-6) !important;flex-wrap:wrap;
+  border-block-end:1px solid var(--gx-hairline) !important}
+.gx-tabs-editorial [role="tab"]{padding:10px 0 !important;
+  font:var(--gx-weight-medium) var(--gx-text-subheading)/1.2 var(--gx-font-display) !important;
+  letter-spacing:var(--gx-track-heading);color:var(--gx-text-secondary) !important;
+  box-shadow:none !important}
+.gx-tabs-editorial [role="tab"][aria-selected="true"]{color:var(--gx-text) !important;
+  font-weight:var(--gx-weight-semibold) !important;
+  box-shadow:inset 0 calc(-1 * var(--gx-rule-heavy) - 1px) 0 0 var(--gx-text) !important}
+@media (max-width:640px){
+  .gx-tabs-editorial [role="tablist"]{gap:var(--gx-space-4) !important;
+    flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x proximity}
+  .gx-tabs-editorial [role="tab"]{scroll-snap-align:start;
+    font-size:var(--gx-text-body) !important}
+}
+
+:root{
+  --gx-text-display-xl:clamp(2.5rem,6vw,4.5rem);
+  --gx-text-display-lg:clamp(2rem,4vw,3rem);
+  --gx-text-display-md:2rem;
+  --gx-text-heading:1.5rem;
+  --gx-text-subheading:1.25rem;
+  --gx-text-body-lg:1.125rem;
+  --gx-text-body:1rem;
+  --gx-text-body-sm:0.875rem;
+  --gx-text-label:0.875rem;
+  --gx-text-caption:0.75rem;   /* smallest text in the system */
+  --gx-text-eyebrow:0.75rem;
+  --gx-text-code:0.875rem;
+
+  --gx-lh-display:1.05; /* @kind other */
+  --gx-lh-display-lg:1.1; /* @kind other */
+  --gx-lh-heading:1.25; /* @kind other */
+  --gx-lh-subheading:1.35; /* @kind other */
+  --gx-lh-body:1.6; /* @kind other */            /* SC 1.4.8 asks >= 1.5 */
+  --gx-lh-tight:1.3; /* @kind other */
+
+  --gx-track-display:-0.03em; /* @kind other */
+  --gx-track-display-lg:-0.02em; /* @kind other */
+  --gx-track-heading:-0.01em; /* @kind other */
+  --gx-track-eyebrow:0.08em; /* @kind other */
+
+  --gx-weight-regular:400; /* @kind font */
+  --gx-weight-medium:500; /* @kind font */
+  --gx-weight-semibold:600; /* @kind font */
+
+  --gx-measure:66ch; /* @kind spacing */           /* <= 80 characters */
+}
+
+/* density axis: visual size only — never touch targets */
+[data-gx-density="compact"]{--gx-density:0.75; /* @kind other */--gx-text-body:0.875rem}
+:root,[data-gx-density="default"]{--gx-density:1 /* @kind other */}
+[data-gx-density="comfortable"]{--gx-density:1.25; /* @kind other */--gx-text-body:1.0625rem}
