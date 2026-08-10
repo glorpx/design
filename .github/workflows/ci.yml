@@ -33,8 +33,11 @@ jobs:
       - name: Type check
         run: pnpm typecheck
 
-      - name: Lint
+      - name: Lint with ESLint
         run: pnpm lint
+
+      - name: Lint with Oxlint
+        run: pnpm exec oxlint src
 
       - name: Test
         run: pnpm test
