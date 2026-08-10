@@ -1,0 +1,62 @@
+{
+  "name": "@glorpx/design",
+  "version": "0.1.0",
+  "description": "React component library with TypeScript and Tailwind CSS",
+  "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.tsx"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^14.0.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "tailwindcss": "^3.0.0",
+    "tsup": "^7.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^0.34.0"
+  },
+  "keywords": [
+    "react",
+    "components",
+    "tailwindcss",
+    "typescript",
+    "design-system"
+  ],
+  "author": "glorpx",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/glorpx/design.git"
+  },
+  "bugs": {
+    "url": "https://github.com/glorpx/design/issues"
+  },
+  "homepage": "https://github.com/glorpx/design#readme"
+}
