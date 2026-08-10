@@ -14,3 +14,4 @@ export { Mark, type MarkProps } from './components/core/Mark';
 export { Icon, type IconProps, GX_ICON_CDN } from './components/core/Icon';
 export { IconButton, type IconButtonProps } from './components/core/IconButton';
 export { Tag, type TagProps } from './components/core/Tag';
+export { Checkbox, type CheckboxProps } from './components/forms/Checkbox';
