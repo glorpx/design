@@ -22,7 +22,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src --ext .ts,.tsx"
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:oxlint": "oxlint src",
+    "verify": "pnpm typecheck && pnpm lint && pnpm lint:oxlint && pnpm test && pnpm build"
   },
   "peerDependencies": {
     "react": "^18.0.0",
