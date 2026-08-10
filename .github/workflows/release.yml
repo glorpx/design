@@ -56,10 +56,15 @@ jobs:
           test -f dist/index.d.ts || { echo "Types missing"; exit 1; }
           echo "✅ Build artifacts verified"
 
+      - name: Setup npm authentication
+        run: |
+          npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
+          npm config set //registry.npmjs.org/:always-auth=true
+
       - name: Publish to npm
-        run: pnpm publish --access public --no-git-checks
+        run: npm publish --access public
         env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Get version from package.json
         id: version
