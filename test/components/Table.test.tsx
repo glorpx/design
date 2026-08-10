@@ -310,9 +310,11 @@ describe('Table', () => {
       const header = screen.getByText('Name');
       fireEvent.click(header);
 
-      // Should be sorted by uppercase value
+      // Should be sorted by uppercase value: ALICE < BOB < CHARLIE
       const names = screen.getAllByText(/^(alice|Bob|charlie)$/);
-      expect(names[0]).toHaveTextContent('Bob');
+      expect(names[0]).toHaveTextContent('alice');
+      expect(names[1]).toHaveTextContent('Bob');
+      expect(names[2]).toHaveTextContent('charlie');
     });
   });
 

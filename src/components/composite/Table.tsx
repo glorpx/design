@@ -181,7 +181,7 @@ export function Table({
                   data-mono={c.mono ? 'true' : 'false'}
                   data-label={typeof c.label === 'string' ? c.label : c.key}
                 >
-                  {c.render ? c.render(r) : r[c.key]}
+                  {c.render ? c.render(r) : (r[c.key] as ReactNode)}
                 </td>
               ))}
             </tr>
