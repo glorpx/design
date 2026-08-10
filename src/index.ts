@@ -24,4 +24,5 @@ export { Radio, RadioGroup, type RadioProps, type RadioGroupProps } from './comp
 export { Switch, type SwitchProps } from './components/forms/Switch';
 export { Select, type SelectOption, type SelectProps } from './components/forms/Select';
 export { Textarea, type TextareaProps } from './components/forms/Textarea';
+export { Footer, type FooterProps, type FooterLink, type FooterColumn } from './components/brand/Footer';
 export const version = '0.1.0';
