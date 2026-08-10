@@ -5,7 +5,7 @@ export interface CodeProps extends React.HTMLAttributes<HTMLElement> {
   style?: CSSProperties;
 }
 
-export interface CodeBlockProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface CodeBlockProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onCopy'> {
   code: string;
   language?: string;
   onCopy?: (code: string) => void;

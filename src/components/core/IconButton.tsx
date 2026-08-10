@@ -1,4 +1,4 @@
-import React, { CSSProperties, MouseEvent, ReactNode } from 'react';
+import { CSSProperties, MouseEvent, ReactNode } from 'react';
 
 // Sizing configuration with proper typing
 type IconButtonSize = 'sm' | 'md' | 'lg';

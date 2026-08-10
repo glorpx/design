@@ -36,7 +36,7 @@ export function Card({
   );
 }
 
-export interface CardHeaderProps extends ComponentPropsWithoutRef<'div'> {
+export interface CardHeaderProps extends Omit<ComponentPropsWithoutRef<'div'>, 'title'> {
   title: ReactNode;
   eyebrow?: string;
   action?: ReactNode;

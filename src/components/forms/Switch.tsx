@@ -40,7 +40,7 @@ export function Switch({
         aria-checked={checked}
         disabled={disabled}
         className={checked ? 'gx-on-fill' : undefined}
-        onClick={() => onChange?.(!!checked ? false : true)}
+        onClick={() => onChange?.(!checked)}
         style={{
           all: 'unset',
           boxSizing: 'border-box',
