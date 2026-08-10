@@ -1,5 +1,5 @@
 /**
- * @glorpx/design - React component library
+ * Component library
  */
 
-export const version = "0.1.0";
+export { Avatar, type AvatarProps } from './components/core/Avatar';
