@@ -3,14 +3,14 @@
   "version": "0.1.1",
   "description": "React component library with TypeScript and Tailwind CSS",
   "type": "module",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     }
   },
   "sideEffects": false,
@@ -22,13 +22,16 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint src --ext .ts,.tsx"
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:oxlint": "oxlint src",
+    "verify": "pnpm typecheck && pnpm lint && pnpm lint:oxlint && pnpm test && pnpm build"
   },
   "peerDependencies": {
     "react": "^18.0.0",
     "react-dom": "^18.0.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.0.0",
     "@testing-library/react": "^14.0.0",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
