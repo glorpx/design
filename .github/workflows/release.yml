@@ -1,0 +1,93 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., 0.2.0)'
+        required: true
+        type: string
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Setup Node.js 24.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.x'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Type check
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+
+      - name: Verify dist folder
+        run: |
+          test -f dist/index.js || { echo "ESM build missing"; exit 1; }
+          test -f dist/index.cjs || { echo "CJS build missing"; exit 1; }
+          test -f dist/index.d.ts || { echo "Types missing"; exit 1; }
+          echo "✅ Build artifacts verified"
+
+      - name: Publish to npm
+        run: pnpm publish --access public
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Get version from package.json
+        id: version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag_name=v$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.version.outputs.tag_name }}
+          release_name: Release ${{ steps.version.outputs.tag_name }}
+          body: |
+            ## Release @glorpx/design v${{ steps.version.outputs.version }}
+
+            **npm:** https://www.npmjs.com/package/@glorpx/design
+            **Docs:** https://design.glorpx.my.id
+
+            ### Changes
+            See [CHANGELOG.md](https://github.com/glorpx/design/blob/main/CHANGELOG.md) for full details.
+          draft: false
+          prerelease: false
+
+      - name: Publish release status
+        run: |
+          echo "✅ Published @glorpx/design@${{ steps.version.outputs.version }}"
+          echo "   npm: https://www.npmjs.com/package/@glorpx/design"
+          echo "   tag: ${{ steps.version.outputs.tag_name }}"
