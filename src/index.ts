@@ -15,6 +15,7 @@ export { Icon, type IconProps, GX_ICON_CDN } from './components/core/Icon';
 export { IconButton, type IconButtonProps } from './components/core/IconButton';
 export { Tag, type TagProps } from './components/core/Tag';
 export { Dialog, type DialogProps } from './components/composite/Dialog';
+export { Table, type TableProps, type TableColumn } from './components/composite/Table';
 export { Checkbox, type CheckboxProps } from './components/forms/Checkbox';
 export { Field, type FieldProps } from './components/forms/Field';
 export { Input, type InputProps } from './components/forms/Input';
